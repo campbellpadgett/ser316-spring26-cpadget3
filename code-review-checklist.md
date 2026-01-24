@@ -25,7 +25,7 @@ Review ALL source files (in main not test) in the project and identify defects u
 | 1 | Book.java     | 54-100  | CS       | Inconsistent use of "this" keyword in class getters and setup function (Coding Standards)                        | Low      |
 | 2 | Book.java     | 121-133 | CG       | Overly ocmplicated equality check in equals()                                                                    | Medium   |
 | 3 | Checkout.java | 241-247 | CG       | Use case of == instead of equals()                                                                               | Medium   |
-| 4 | Checkout.java | 142-146 | FD       | checkoutBook() is not complete and return 0.0 no matter what the cirumstance                                     | High     |
+| 4 | Patron.java   | 161-164 | FD       | payFine() doesn't check for values > 0                                                                           | High     |
 | 5 | Book.java     | 105-110 | FD       | returnBook() arbitrairily sets a limit to the number of books that can be returned to 100 instead of totalCopies | High     |
 | 6 |               |         |          |                                                                                                                  |          |
 | 7 |               |         |          |                                                                                                                  |          |
