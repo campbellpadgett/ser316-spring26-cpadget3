@@ -1,8 +1,8 @@
 # Black Box Testing Report - Assignment 2
 
-**Student Name:** [Your Name]  
-**ASU ID:** [Your ASU ID]  
-**Date:** [Date]
+**Student Name:** Campbell Padgett
+**ASU ID:** cpadget3
+**Date:** 1/24
 
 ---
 
@@ -35,9 +35,26 @@ Do **not** put everything into one table.
 
 ### Your EP Tables (add as many as needed)
 
+Book Availability
+
 | Partition ID | State | Valid/Invalid | Input Condition | Expected Return | Expected Behavior |
 |--------------|-------|---------------|----------------|-----------------|------------------|
-| EP ___ | | | | | |
+| EP 1.1       | Unavailable (0 copies) | Invalid | availableCopies == 0 AND other conditions allow checkout | 2.0 | No copies to checkout |
+| EP 1.2       | Available (1+ copies) | Valid | availableCopies > 0 AND other conditions allow checkout | Success | Book can be checked out |
+
+Book Type
+
+| Partition ID | State                 | Valid/Invalid | Input Condition                                                                       | Expected Return | Expected Behavior |
+|--------------|-----------------------|---------------|---------------------------------------------------------------------------------------|-----------------|------------------|
+| EP 2.1       | referenceOnly = true  | Invalid       | availableCopies == 0 due to reference only = True AND other conditions allow checkout | 5.0 | No copies to checkout |
+| EP 2.2       | referenceOnly = false | Valid         | availableCopies == totalCopies AND other conditions allow checkout                    | Success | Book can be checked out |
+
+Book Null
+
+| Partition ID | State              | Valid/Invalid | Input Condition               | Expected Return | Expected Behavior |
+|--------------|--------------------|---------------|-------------------------------|-----------------|------------------|
+| EP 3.1       | Book() is NULL     | Invalid       | Book().isNull() == True       | 2.1             | No copies to checkout |
+| EP 3.2       | Book() is not NULL | Valid         | Book().isNull() == True  AND  | Success  other conditions allow checkout    | Book can be checked out |
 
 ---
 
