@@ -56,6 +56,21 @@ Book Null
 | EP 3.1       | Book() is NULL     | Invalid       | Book().isNull() == True       | 2.1             | No copies to checkout |
 | EP 3.2       | Book() is not NULL | Valid         | Book().isNull() == True  AND  | Success  other conditions allow checkout    | Book can be checked out |
 
+Patron Type
+
+| Partition ID | State                                   | Valid/Invalid            | Input Condition                                                                                                    | Expected Return           | Expected Behavior                                                                                                                                                             |
+|--------------|-----------------------------------------| ------------------------ |--------------------------------------------------------------------------------------------------------------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| EP 4.1       | STUDENT                                 | Valid                    | patron != null, eligible, not renewal, book available, below max limit                                             | Success  | Book can be checked out                                                                                                                                                       |
+| EP 4.2       | FACULTY                                 | Valid                    | patron != null, eligible, not renewal, book available, below max limit                                             | Success  | Book can be checked out                                                                                                                                                       |
+| EP 4.3       | STAFF                                   | Valid                    | patron != null, eligible, not renewal, book available, below max limit                                             | Success  | Book can be checked out                                                                                                                                                       |
+| EP 4.4       | PUBLIC                                  | Valid                    | patron != null, eligible, not renewal, book available, below max limit                                             | Success  | Book can be checked out                                                 |
+| EP 4.5       | CHILD                                   | Valid                    | patron != null, eligible, not renewal, book available, below max limit                                             | Success  | Book can be checked out  |
+| EP 4.6       | Any type with the max limit             | Invalid                  | not renewal AND patron.getCheckoutCount() == patron.getMaxCheckoutLimit() AND other conditions allow checkout      | 3.2      | Deny checkout due to max limit                                                                    |
+| EP 4.7       | Any type within 2 of max after checkout | Valid          | not renewal AND book available AND afterCount >= maxLimit-2 AND overdueCount not in 1–2                                    | 1.1        | Book can be checked out                      |
+| EP 4.8       | Any type renewal                        | Valid                    | patron already has this ISBN checked out (renewal) AND eligibility passed AND book not null AND not reference-only  | 0.1     | Book can be checked out .                                   |
+
+If you want the table to be *strictly* “partition by patron type only” (5 rows total), use EP T.1–T.5. The remaining rows (T.6–T.9) are type-related edge partitions that often show up in a complete equivalence partitioning set for this method.
+
 ---
 
 ## Part 2: Boundary Value Analysis (BVA)
