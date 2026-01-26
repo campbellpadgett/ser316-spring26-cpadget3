@@ -80,8 +80,10 @@ Patron suspension
 | EP 5.5       | Suspended AND renewal case        | Invalid       | suspended AND patron already has the ISBN checked out                                                | 3.0             | Book can't be checked out. |
 | EP 5.6       | Patron is null                    | Invalid       | patron == null                                                                                       | 3.1             | Book can't be checked out. |
 
+Renewals
+
 | Partition ID | State                                                    | Valid/Invalid | Input Condition                                                                                                          | Expected Return | Expected Behavior                                                           |
-|--------------|----------------------------------------------------------| ------------- |--------------------------------------------------------------------------------------------------------------------------|-----------------|-----------------------------------------------------------------------------|
+|--------------|----------------------------------------------------------|---------------|--------------------------------------------------------------------------------------------------------------------------|-----------------|-----------------------------------------------------------------------------|
 | EP 6.1       | Renewal with book being available                        | Valid         | patron != null AND book != null AND book.isReferenceOnly() == false AND patron.hasBookCheckedOut(book.getIsbn()) == true | 0.1             | Book can be checked out, renewed                                            |
 | EP 6.2       | Renewal with book being unavailable (0 copies)           | Valid         | Same as EP 6.1 AND book.getAvailableCopies() <= 0                                                                        | 0.1             | Book can be checked out, renewed                                            |
 | EP 6.3       | Renewal when patron is at max checkout                   | Valid         | Same as EP 6.1 AND patron.getCheckoutCount() == patron.getMaxCheckoutLimit()                                             | 0.1             | Book can be checked out, renewed                                            |
@@ -101,20 +103,40 @@ Important BVA cases may overlap with EP. That is OK. You can reference all relev
 
 ### Example BVA Table: Overdue Count (Threshold: 3)
 
-| Test ID | Boundary | Input Value | Expected Return | Rationale |
-|---------|----------|-------------|-----------------|-----------|
-| BVA 1.1 | Below | overdueCount = 0 | Success (depends on other setup) | Below warning threshold |
-| BVA 1.2 | Warning High | overdueCount = 2 | 1.0 | Just below reject threshold |
-| BVA 1.3 | At | overdueCount = 3 | 4.0 | At rejection boundary |
-| BVA 1.4 | Above | overdueCount = 4 | 4.0 | Above rejection boundary |
+| Test ID   | Boundary     | Input Value      | Expected Return                                    | Rationale                   |
+|-----------|--------------|------------------|----------------------------------------------------|-----------------------------|
+| BVA 1.1   | Below        | overdueCount = 0 | Success (depends on other setup)                   | Below warning threshold     |
+| BVA 1.2   | Warning High | overdueCount = 2 | 1.0                                                | Just below reject threshold |
+| BVA 1.3   | At           | overdueCount = 3 | 4.0                                                | At rejection boundary       |
+| BVA 1.4   | Above        | overdueCount = 4 | 4.0                                                | Above rejection boundary    |
 
 ---
 
 ### Your BVA Tables (add more as needed)
 
-| Test ID | Boundary | Input Value | Expected Return | Rationale |
-|---------|----------|-------------|-----------------|-----------|
-| BVA ___ | | | | |
+Checkout Values
+
+| Test ID   | Boundary | Input Value                  | Expected Return | Rationale                   |
+|-----------|----------|------------------------------|-----------------|-----------------------------|
+| BVA 1.1   | Below    | checkoutCount = maxLimit - 4 | 0.0             | Below warning threshold     |
+| BVA 1.2   | Warning  | checkoutCount = maxLimit - 3 | 1.1             | Warning threshold           |
+| BVA 1.3   | Warning  | checkoutCount = maxLimit - 2 | 1.1             | Just below reject threshold |
+| BVA 1.4   | Below    | checkoutCount = maxLimit - 1 | 1.1             | Just below reject threshold |
+| BVA 1.5   | At       | checkoutCount = maxLimit     | 3.2             | At rejection boundary       |
+| BVA 1.6   | Above    | checkoutCount = maxLimit + 1 | 3.2             | Above rejection boundary    |
+
+Loan Period Values
+
+| Test ID | Boundary                           | Patron Type / Setup                      | Input Value (loanPeriodDays) | Expected Return | Rationale                                                                         |
+|---------|------------------------------------|------------------------------------------|------------------------------|-----------------|-----------------------------------------------------------------------------------|
+| BVA 2.1 | Lowest (Child)                     | CHILD, normal checkout                   | 14                           | Success         | Lowest loan period threshold for that patron type                                 |
+| BVA 2.2 | Lowest (Public)                    | PUBLIC, normal checkout                  | 21                           | Success         | Lowest loan period threshold for that patron type                                 |
+| BVA 2.3 | Lowest (Student)                   | STUDENT, normal checkout                 | 30                           | Success         | Lowest loan period threshold for that patron type                                 |
+| BVA 2.4 | Lowest (Staff)                     | STAFF, normal checkout                   | 45                           | Success         | Lowest loan period threshold for that patron type                                 |
+| BVA 2.5 | Max amount tital, lowest (faculty) | FACULTY, normal checkout                 | 60                           | Success         | Lowest loan period threshold for that patron type but highest for loaning overall |
+| BVA 2.6 | Renewal boundary (Lowest)          | CHILD, renewal (patron already has ISBN) | 14                           | 0.1             | Lowest loan period threshold for renewal                                          |
+| BVA 2.7 | Renewal boundary (max)             | FACULTY, renewal                         | 60                           | 0.1             | Highest loan period threshold for renewal                                         |
+
 
 ---
 
