@@ -127,16 +127,27 @@ Checkout Values
 
 Loan Period Values
 
-| Test ID | Boundary                           | Patron Type / Setup                      | Input Value (loanPeriodDays) | Expected Return | Rationale                                                                         |
-|---------|------------------------------------|------------------------------------------|------------------------------|-----------------|-----------------------------------------------------------------------------------|
-| BVA 2.1 | Lowest (Child)                     | CHILD, normal checkout                   | 14                           | Success         | Lowest loan period threshold for that patron type                                 |
-| BVA 2.2 | Lowest (Public)                    | PUBLIC, normal checkout                  | 21                           | Success         | Lowest loan period threshold for that patron type                                 |
-| BVA 2.3 | Lowest (Student)                   | STUDENT, normal checkout                 | 30                           | Success         | Lowest loan period threshold for that patron type                                 |
-| BVA 2.4 | Lowest (Staff)                     | STAFF, normal checkout                   | 45                           | Success         | Lowest loan period threshold for that patron type                                 |
-| BVA 2.5 | Max amount tital, lowest (faculty) | FACULTY, normal checkout                 | 60                           | Success         | Lowest loan period threshold for that patron type but highest for loaning overall |
-| BVA 2.6 | Renewal boundary (Lowest)          | CHILD, renewal (patron already has ISBN) | 14                           | 0.1             | Lowest loan period threshold for renewal                                          |
-| BVA 2.7 | Renewal boundary (max)             | FACULTY, renewal                         | 60                           | 0.1             | Highest loan period threshold for renewal                                         |
+| Test ID | Boundary                           | Input Value                              | Input Value   | Expected Return | Rationale                                                                         |
+|---------|------------------------------------|------------------------------------------|---------------|-----------------|-----------------------------------------------------------------------------------|
+| BVA 2.1 | Lowest (Child)                     | CHILD, normal checkout                   | 14            | Success         | Lowest loan period threshold for that patron type                                 |
+| BVA 2.2 | Lowest (Public)                    | PUBLIC, normal checkout                  | 21            | Success         | Lowest loan period threshold for that patron type                                 |
+| BVA 2.3 | Lowest (Student)                   | STUDENT, normal checkout                 | 30            | Success         | Lowest loan period threshold for that patron type                                 |
+| BVA 2.4 | Lowest (Staff)                     | STAFF, normal checkout                   | 45            | Success         | Lowest loan period threshold for that patron type                                 |
+| BVA 2.5 | Max amount tital, lowest (faculty) | FACULTY, normal checkout                 | 60            | Success         | Lowest loan period threshold for that patron type but highest for loaning overall |
+| BVA 2.6 | Renewal boundary (Lowest)          | CHILD, renewal (patron already has ISBN) | 14            | 0.1             | Lowest loan period threshold for renewal                                          |
+| BVA 2.7 | Renewal boundary (max)             | FACULTY, renewal                         | 60            | 0.1             | Highest loan period threshold for renewal                                         |
 
+Fee Values
+
+| Test ID | Boundary                           | Input Value                   | Expected Return | Rationale                                               |
+|---------|------------------------------------|-------------------------------|-----------------|---------------------------------------------------------|
+| BVA 3.1 | Below (lowest)                     | 0                             | Success         | Below the fine threshold                                |
+| BVA 3.2 | Below                              | 9.99                          | Success         | Below the rejection threshold                           |
+| BVA 3.3 | At                                 | 10.00                         | 4.1             | At rejection threshold                                  |
+| BVA 3.4 | Above                              | 10.01                         | 4.1             | Above the threshold                                     |
+| BVA 3.5 | Above (highest)                    | 25.00                         | 4.1             | Above the threshold at the highest rate withe rejection |
+| BVA 3.6 | At threshold with renewal attempts | 10.00 and book is checked out | 4.1             | Highest renewal and fee                                 |
+| BVA 3.7 | At threshold with book = null      | 10.00 and book is null        | 4.1             | Edge case with fee                                      |
 
 ---
 
