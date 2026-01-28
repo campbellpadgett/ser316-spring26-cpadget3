@@ -176,4 +176,148 @@ public class CheckoutBlackBoxSample {
         assertEquals(countBefore, patron.getCheckoutCount());
         assertFalse(patron.hasBookCheckedOut(book.getIsbn()));
     }
+
+
+
+    @ParameterizedTest
+    @MethodSource("checkoutClassProvider")
+    @DisplayName("T3 testSuspendedWithBookNull, EP 5.2, patron PUBLIC, suspended=true, book = null, expected 3.0")
+    public void testSuspendedWithBookNull(Class<? extends Checkout> checkoutClass) throws Exception {
+
+        checkout = createCheckout(checkoutClass);
+
+        Patron patron = new Patron("1", "Test Patron", "e@e.com", Patron.PatronType.PUBLIC);
+        patron.setAccountSuspended(true);
+        checkout.registerPatron(patron);
+
+        int countBefore = patron.getCheckoutCount();
+        double result = checkout.checkoutBook(null, patron);
+
+        assertEquals(3.0, result, 0.01);
+        assertEquals(countBefore, patron.getCheckoutCount());
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkoutClassProvider")
+    @DisplayName("T4 testFinesAtThreshold, BVA 3.3, patron STAFF, suspended=false, fines=10.00, overdue=0, book non-null, availableCopies=5, refOnly=false, expected 4.1")
+    public void testFinesAtThreshold(Class<? extends Checkout> checkoutClass) throws Exception {
+        checkout = createCheckout(checkoutClass);
+
+        Book book = new Book("ISBN-1", "Test Book", "Author", Book.BookType.FICTION, 5);
+        Patron patron = new Patron("1", "Test Patron", "e@e.com", Patron.PatronType.STAFF);
+        patron.addFine(10.00);
+
+        checkout.addBook(book);
+        checkout.registerPatron(patron);
+
+        int copiesBefore = book.getAvailableCopies();
+        int countBefore = patron.getCheckoutCount();
+
+        double result = checkout.checkoutBook(book, patron);
+
+        assertEquals(4.1, result, 0.01);
+        assertEquals(copiesBefore, book.getAvailableCopies());
+        assertEquals(countBefore, patron.getCheckoutCount());
+        assertFalse(patron.hasBookCheckedOut(book.getIsbn()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkoutClassProvider")
+    @DisplayName("T5 testFinesBelow, BVA 3.2, patron STAFF, fines=9.99, overdue=0, checkoutCount=0, book availableCopies=5, refOnly=false, not renewal, expected 0.0")
+    public void testFinesBelow(Class<? extends Checkout> checkoutClass) throws Exception {
+        checkout = createCheckout(checkoutClass);
+
+        Book book = new Book("ISBN-1", "Test Book", "Author", Book.BookType.FICTION, 5);
+        Patron patron = new Patron("1", "Test Patron", "e@e.com", Patron.PatronType.STAFF);
+        patron.addFine(9.99);
+
+        checkout.addBook(book);
+        checkout.registerPatron(patron);
+
+        int copiesBefore = book.getAvailableCopies();
+        int countBefore = patron.getCheckoutCount();
+
+        double result = checkout.checkoutBook(book, patron);
+
+        assertEquals(0.0, result, 0.01);
+        assertEquals(copiesBefore - 1, book.getAvailableCopies());
+        assertEquals(countBefore + 1, patron.getCheckoutCount());
+        assertTrue(patron.hasBookCheckedOut(book.getIsbn()));
+
+        LocalDate expectedDue = LocalDate.now().plusDays(patron.getLoanPeriodDays());
+        assertEquals(expectedDue, patron.getCheckedOutBooks().get(book.getIsbn()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkoutClassProvider")
+    @DisplayName("T6 testOverdueAtBoundary, BVA 1.3, patron STUDENT, overdue=3, fines=0, suspended=false, book availableCopies=5, refOnly=false, expected 4.0")
+    public void testOverdueAtBoundary(Class<? extends Checkout> checkoutClass) throws Exception {
+        checkout = createCheckout(checkoutClass);
+
+        Book book = new Book("ISBN-1", "Test Book", "Author", Book.BookType.FICTION, 5);
+        Patron patron = new Patron("1", "Test Patron", "e@e.com", Patron.PatronType.STUDENT);
+        patron.setOverdueCount(3);
+
+        checkout.addBook(book);
+        checkout.registerPatron(patron);
+
+        int copiesBefore = book.getAvailableCopies();
+        int countBefore = patron.getCheckoutCount();
+
+        double result = checkout.checkoutBook(book, patron);
+
+        assertEquals(4.0, result, 0.01);
+        assertEquals(copiesBefore, book.getAvailableCopies());
+        assertEquals(countBefore, patron.getCheckoutCount());
+        assertFalse(patron.hasBookCheckedOut(book.getIsbn()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkoutClassProvider")
+    @DisplayName("T7 testOverdueWarning, BVA 1.2, patron STUDENT, overdue=2, fines=0, suspended=false, checkoutCount=0, book availableCopies=5, refOnly=false, expected 1.0")
+    public void testOverdueWarning(Class<? extends Checkout> checkoutClass) throws Exception {
+        checkout = createCheckout(checkoutClass);
+
+        Book book = new Book("ISBN-1", "Test Book", "Author", Book.BookType.FICTION, 5);
+        Patron patron = new Patron("1", "Test Patron", "e@e.com", Patron.PatronType.STUDENT);
+        patron.setOverdueCount(2);
+
+        checkout.addBook(book);
+        checkout.registerPatron(patron);
+
+        int copiesBefore = book.getAvailableCopies();
+        int countBefore = patron.getCheckoutCount();
+
+        double result = checkout.checkoutBook(book, patron);
+
+        assertEquals(1.0, result, 0.01);
+        assertEquals(copiesBefore - 1, book.getAvailableCopies());
+        assertEquals(countBefore + 1, patron.getCheckoutCount());
+        assertTrue(patron.hasBookCheckedOut(book.getIsbn()));
+
+        LocalDate expectedDue = LocalDate.now().plusDays(patron.getLoanPeriodDays());
+        assertEquals(expectedDue, patron.getCheckedOutBooks().get(book.getIsbn()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkoutClassProvider")
+    @DisplayName("T8 testBookIsNullButEligiblePatron, EP 3.1, patron FACULTY, eligible, suspended=false, overdue=0, fines=0, book=null, expected 2.1")
+    public void testBookIsNullButEligiblePatron(Class<? extends Checkout> checkoutClass) throws Exception {
+
+        checkout = createCheckout(checkoutClass);
+
+        Patron patron = new Patron("1", "Test Patron", "e@e.com", Patron.PatronType.FACULTY);
+        checkout.registerPatron(patron);
+
+        int countBefore = patron.getCheckoutCount();
+        double result = checkout.checkoutBook(null, patron);
+
+        assertEquals(2.1, result, 0.01);
+        assertEquals(countBefore, patron.getCheckoutCount());
+    }
+
+
+
+
+
 }
