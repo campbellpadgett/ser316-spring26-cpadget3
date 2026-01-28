@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -42,8 +41,8 @@ public class CheckoutBlackBoxSample {
 
     // Uncomment when you implement the method in assign 3 and comment the above
 //    static Stream<Class<? extends Checkout>> checkoutClassProvider() {
-//        return Stream.of(Checkout.class);
-//    }
+////        return Stream.of(Checkout.class);
+////    }
 
 
     /**
@@ -125,5 +124,56 @@ public class CheckoutBlackBoxSample {
         // Verify: Patron should NOT have the book
         assertFalse(patron.hasBookCheckedOut(book.getIsbn()),
                 "Patron should NOT have book in list for " + checkoutClass.getSimpleName());
+    }
+
+
+    private void createCheeckedBooks(Patron patron, int count) {
+        for (int i = 0; i < count; i++) {
+            String isbn = "DUMMY-" + i;
+            patron.addCheckedOutBook(isbn, LocalDate.now().plusDays(7));
+        }
+    }
+
+
+
+
+    @ParameterizedTest
+    @MethodSource("checkoutClassProvider")
+    @DisplayName("T1 testPatronIsNull, EP 5.6, patron = null, book non-null, refOnly=false, availableCopies=5, expected 3.1")
+    public void testPatronIsNull(Class<? extends Checkout> checkoutClass) throws Exception {
+        checkout = createCheckout(checkoutClass);
+
+        Book book = new Book("ISBN-1", "Test Book", "Author", Book.BookType.FICTION, 5);
+        checkout.addBook(book);
+
+        int copiesBefore = book.getAvailableCopies();
+        double result = checkout.checkoutBook(book, null);
+
+        assertEquals(3.1, result, 0.01);
+        assertEquals(copiesBefore, book.getAvailableCopies());
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkoutClassProvider")
+    @DisplayName("T2 testSuspendedPatron, EP 5.1, patron STUDENT, suspended=true, fines=0, overdue=0, book not null, refOnly=false, availableCopies=5, not renewal, expected 3.0")
+    public void testSuspendedPatron(Class<? extends Checkout> checkoutClass) throws Exception {
+        checkout = createCheckout(checkoutClass);
+
+        Book book = new Book("ISBN-1", "Test Book", "Author", Book.BookType.FICTION, 5);
+        Patron patron = new Patron("1", "Test Patron", "e@e.com", Patron.PatronType.STUDENT);
+        patron.setAccountSuspended(true);
+
+        checkout.addBook(book);
+        checkout.registerPatron(patron);
+
+        int copiesBefore = book.getAvailableCopies();
+        int countBefore = patron.getCheckoutCount();
+
+        double result = checkout.checkoutBook(book, patron);
+
+        assertEquals(3.0, result, 0.01);
+        assertEquals(copiesBefore, book.getAvailableCopies());
+        assertEquals(countBefore, patron.getCheckoutCount());
+        assertFalse(patron.hasBookCheckedOut(book.getIsbn()));
     }
 }
