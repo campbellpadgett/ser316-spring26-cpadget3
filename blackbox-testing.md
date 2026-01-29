@@ -44,17 +44,17 @@ Book Availability
 
 Book Type
 
-| Partition ID | State                 | Valid/Invalid | Input Condition                                                                       | Expected Return | Expected Behavior |
-|--------------|-----------------------|---------------|---------------------------------------------------------------------------------------|-----------------|------------------|
-| EP 2.1       | referenceOnly = true  | Invalid       | availableCopies == 0 due to reference only = True AND other conditions allow checkout | 5.0             | No copies to checkout |
+| Partition ID | State                 | Valid/Invalid | Input Condition                                                                       | Expected Return | Expected Behavior       |
+|--------------|-----------------------|---------------|---------------------------------------------------------------------------------------|-----------------|-------------------------|
+| EP 2.1       | referenceOnly = true  | Invalid       | availableCopies == 0 due to reference only = True AND other conditions allow checkout | 5.0             | No copies to checkout   |
 | EP 2.2       | referenceOnly = false | Valid         | availableCopies == totalCopies AND other conditions allow checkout                    | Success         | Book can be checked out |
 
 Book Null
 
-| Partition ID | State              | Valid/Invalid | Input Condition           | Expected Return                          | Expected Behavior |
-|--------------|--------------------|---------------|---------------------------|------------------------------------------|------------------|
-| EP 3.1       | Book() is NULL     | Invalid       | Book().isNull() == True   | 2.1                                      | No copies to checkout |
-| EP 3.2       | Book() is not NULL | Valid         | Book().isNull() == False  | Success  other conditions allow checkout | Book can be checked out |
+| Partition ID | State              | Valid/Invalid | Input Condition          | Expected Return                          | Expected Behavior       |
+|--------------|--------------------|---------------|--------------------------|------------------------------------------|-------------------------|
+| EP 3.1       | Book() is NULL     | Invalid       | Book().isNull() == True  | 2.1                                      | No copies to checkout   |
+| EP 3.2       | Book() is not NULL | Valid         | Book().isNull() == False | Success  other conditions allow checkout | Book can be checked out |
 
 Patron Type
 
@@ -268,29 +268,35 @@ List distinct bugs you identified for each implementation. Each bug must cite at
 - Bug 1: Checkout count did not get updated after a valid checkout — Revealed by: T11
 
 **Checkout2:**
-- Bug 1: Unexpected reslut code (Passed: 0.0) when it should have been a warning for a child patron (1.1) — Revealed by: T20
+- Bug 1: Unexpected result code (Passed: 0.0) when it should have been a warning for a child patron (1.1) — Revealed by: T20
 
 **Checkout3:**
-- Bug 1: Unexpected reslut code (unavaiable for student: 2.0) when it should have been a renwal for a student patron (0.1) — Revealed by: T12
+- Bug 1: Unexpected result code (unavailable for student: 2.0) when it should have been a renewal for a student patron (0.1) — Revealed by: T12
 
 ### Comparative Analysis
 Compare the four implementations:
 - Which bugs are most critical (cause the worst failures)?
-  - I would say errors reguarding available copies becuase that not affects user's ability to checkout but the system's ability to track inventory and ordering.
+  - I would say errors regarding available copies becuase that not affects user's ability to checkout but the system's ability to track inventory and ordering.
 - Which implementation would you use if you had to choose?
   - At this point, I would use Checkout3 since it has the least failed tests and could be adapted the fastest.
 - Why? Justify your choice considering bug severity and frequency.
-  - As frustrating as a failure in the renwal and overdue proceses are, they ultaimte can be adressed quickly either in the code or a process cahgne while the code is being worked on. The other's have issues with actual checkouts and tracking amounts of books available.  
+  - As frustrating as a failure in the renewal and overdue processes are, they ultimate can be addressed quickly either in the code or a process cahgne while the code is being worked on. The other's have issues with actual checkouts and tracking amounts of books available.  
 
 ---
 
 ## Part 5: Reflection
 
 **Which testing technique was most effective for finding bugs?**
+The white box only found one bug versus the dozens that the black box method found
 
 **What was the most challenging aspect of this assignment?**
+The baseic test designs. The BVA and EP portions were very time consuming, but the test designs required more thought and effort overall 
 
 **How did you decide on your EP and BVA?**
+For EPs, I tried to think about the basic functionality (Checkout, renewals, Patron behaviors etc) and figure the main ways they could go wrong
+
+For BVAs, I went through the inputs to major behaviors and tried to get the edge cases.
 
 **Describe one test where checking only the return value would NOT have been sufficient to detect a bug.**
+T19 showed that the checkout didn't updated the number of available books. If you had been just checking to see the checkout return code you wouldn't know the inventory hadn't been updated. 
 
