@@ -206,17 +206,57 @@ At least some of your tests should verify observable state changes, not just ret
 
 ### Easter Eggs Found
 List any easter egg messages you observed:
-- 
-- 
+[EASTER EGG #19]: 'Availability testing finds the books that aren't there.'
+[EASTER EGG #19]: 'Can't check out what isn't there.'
+[EASTER EGG #19]: 'Good EP testing checks all partitions.'
+[EASTER EGG #10.1]: 'Testing can show the presence of bugs,'
+
+[EASTER EGG #19]: 'Testing the sad path matters.'
+[EASTER EGG #15.2]: ...xvFZjo5PgG0 (test renewal to complete!)
+[EASTER EGG #10.1/3]: 'Testing can show the presence of bugs,'
+
+[EASTER EGG #17]: 'The happy path matters too.'
+[EASTER EGG #10.1]: 'Testing can show the presence of bugs,'
+
+[EASTER EGG #10.1]: 'Testing can show the presence of bugs,'
+[EASTER EGG #10.1]: 'Testing can show the presence of bugs,'
+[EASTER EGG #10.3]: '- Dijkstra'
+[EASTER EGG #10.3/3]: '- Dijkstra'
+[EASTER EGG #10.3]: '- Dijkstra'
+[EASTER EGG #10.3]: '- Dijkstra'
+[EASTER EGG #15.2]: ...xvFZjo5PgG0 (test renewal to complete!)
+[EASTER EGG #10.1/3]: 'Testing can show the presence of bugs,'
+
+[EASTER EGG #17]: 'The happy path matters too.'
+[EASTER EGG #10.1]: 'Testing can show the presence of bugs,'
+
+[EASTER EGG #10.1]: 'Testing can show the presence of bugs,'
+
+[EASTER EGG #15.2]: ...xvFZjo5PgG0 (test renewal to complete!)
+[EASTER EGG #10.2/3]: 'but never their absence'
+
+[EASTER EGG #17]: 'The happy path matters too.'
+[EASTER EGG #10.2]: 'but never their absence'
+
+[EASTER EGG #20]: 'Reference books are meant to be consulted, not carried home.'
+
+[EASTER EGG #20]: 'These books stay home.'
+[EASTER EGG #20]: 'Reference materials: look but don't touch.'
+[EASTER EGG #20]: 'Stay in the library, book!'
+[EASTER EGG #15.2]: ...xvFZjo5PgG0 (test renewal to complete!)
+[EASTER EGG #10.1/3]: 'Testing can show the presence of bugs,'
+
+[EASTER EGG #17]: 'The happy path matters too.'
+[EASTER EGG #10.1]: 'Testing can show the presence of bugs,'
 
 ### Implementation Results
 
 | Implementation | Bugs Found (count) |
-|----------------|---------------------|
-| Checkout0      | |
-| Checkout1      | |
-| Checkout2      | |
-| Checkout3      | |
+|----------------|--------------------|
+| Checkout0      | 11                 |
+| Checkout1      | 11                 |
+| Checkout2      | 5                  |
+| Checkout3      | 2                  |
 
 ### Bugs Discovered
 List distinct bugs you identified for each implementation. Each bug must cite at least one test case that revealed it.

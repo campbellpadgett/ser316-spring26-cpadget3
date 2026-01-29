@@ -39,7 +39,7 @@ public class CheckoutBlackBoxSample {
         );
     }
 
-    // Uncomment when you implement the method in assign 3 and comment the above
+//     Uncomment when you implement the method in assign 3 and comment the above
 //    static Stream<Class<? extends Checkout>> checkoutClassProvider() {
 ////        return Stream.of(Checkout.class);
 ////    }
