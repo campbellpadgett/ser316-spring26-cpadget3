@@ -262,22 +262,25 @@ List any easter egg messages you observed:
 List distinct bugs you identified for each implementation. Each bug must cite at least one test case that revealed it.
 
 **Checkout0:**
-- Bug 1: [Brief description] — Revealed by: [Test ID]
+- Bug 1: The number of available copies did update after a valid checkout — Revealed by: T19
 
 **Checkout1:**
-- Bug 1: [Brief description] — Revealed by: [Test ID]
+- Bug 1: Checkout count did not get updated after a valid checkout — Revealed by: T11
 
 **Checkout2:**
-- Bug 1: [Brief description] — Revealed by: [Test ID]
+- Bug 1: Unexpected reslut code (Passed: 0.0) when it should have been a warning for a child patron (1.1) — Revealed by: T20
 
 **Checkout3:**
-- Bug 1: [Brief description] — Revealed by: [Test ID]
+- Bug 1: Unexpected reslut code (unavaiable for student: 2.0) when it should have been a renwal for a student patron (0.1) — Revealed by: T12
 
 ### Comparative Analysis
 Compare the four implementations:
 - Which bugs are most critical (cause the worst failures)?
+  - I would say errors reguarding available copies becuase that not affects user's ability to checkout but the system's ability to track inventory and ordering.
 - Which implementation would you use if you had to choose?
+  - At this point, I would use Checkout3 since it has the least failed tests and could be adapted the fastest.
 - Why? Justify your choice considering bug severity and frequency.
+  - As frustrating as a failure in the renwal and overdue proceses are, they ultaimte can be adressed quickly either in the code or a process cahgne while the code is being worked on. The other's have issues with actual checkouts and tracking amounts of books available.  
 
 ---
 
