@@ -139,11 +139,54 @@ public class Checkout {
      * @param patron The patron checking out the book (can be null)
      * @return Status code indicating result (see above)
      */
-    public double checkoutBook(Book book, Patron patron) {
-//        Implement me in Assignment 3
-        // Normal success
+    public double checkoutBook(Book book, Patron patron)
+    {
+
+
+
+        double eligable = validatePatronEligibility(patron);
+        if (eligable != 0.0) {
+            return eligable;
+        }
+
+        if (book == null) return 2.1;
+        if (book.isReferenceOnly()) return 5.0;
+
+
+        LocalDate now = LocalDate.now();
+        LocalDate dueDate = now.plusDays(patron.getLoanPeriodDays());
+        if (patron.hasBookCheckedOut(book.getIsbn()))
+        {
+            patron.addCheckedOutBook(book.getIsbn(), dueDate);
+            history.add(new Transaction(patron, book, now, dueDate));
+
+            return 0.1;
+        }
+
+        // availability check
+        if (!book.isAvailable()) return 2.0;
+
+        // max check
+        if (patron.getCheckoutCount() >= patron.getMaxCheckoutLimit()) return 3.2;
+
+        // checkout
+        patron.addCheckedOutBook(book.getIsbn(), dueDate);
+        book.checkout();
+        history.add(new Transaction(patron, book, now, dueDate));
+
+        //find code after checkout
+        if (patron.getOverdueCount() >= 1 && patron.getOverdueCount() <= 2) return 1.0;
+
+        int max = patron.getMaxCheckoutLimit();
+        int countAfter = patron.getCheckoutCount();
+        if (countAfter >= (max - 2)) return 1.1;
+
         return 0.0;
+
+//        // Normal success
+//        return 0.0;
     }
+
 
 
     /**
