@@ -104,9 +104,7 @@ public class Book {
      * Increments available copies when book is returned.
      */
     public void returnBook() {
-        if (availableCopies < 100) {
-            availableCopies++;
-        }
+        if (availableCopies < totalCopies) availableCopies++;
         this.available = (availableCopies > 0);
     }
 
