@@ -1,10 +1,13 @@
 # Static Analysis Report - Assignment 4
 
-**Student Name:** [Your Name]
-**ASU ID:** [Your ASU ID]
-**Date:** [Date]
+**Student Name:** Campbell Padgett  
+**ASU ID:** cpadget3
+**Date:** 2/9
 
 ---
+
+**What is the Gradle wrapper and why is it useful for team projects?**
+- The wrapper means you can automate gradle in a CI pipeline. It also helps keep everyone using the same version of gradle.
 
 ## Part 1: GitHub Actions Setup
 
