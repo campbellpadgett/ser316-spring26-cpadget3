@@ -13,13 +13,25 @@
 
 **Which branches fail on GitHub Actions? Explain why.**
 
-1. **Branch:** ___________
-   - **Status:** Passing / Failing
-   - **Reason:**
+1. **Branch:** StaticAnalysis
+   - **Status:** Failing
+   - **Reason:** Error: Cannot locate Gradle wrapper properties
 
-2. **Branch:** ___________
-   - **Status:** Passing / Failing
-   - **Reason:**
+2. **Branch:** Review
+   - **Status:** Failing
+   - **Reason:** Error: Cannot locate Gradle wrapper properties
+
+3. **Branch:** Whitebox
+   - **Status:** Failing
+   - **Reason:** Error: Cannot locate Gradle wrapper properties
+
+4. **Branch:** Blackbox
+   - **Status:** Failing
+   - **Reason:** Error: Cannot locate Gradle wrapper properties
+
+5. **Branch:** main
+   - **Status:** Failing
+   - **Reason:** Error: Cannot locate Gradle wrapper properties
 
 ---
 

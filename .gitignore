@@ -3,8 +3,6 @@
 /build/
 /cls/
 /config/
-/gradle/
-/gradlew.bat
 /.idea/
 /whitebox-testing.md
 /static-analysis.md
