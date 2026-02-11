@@ -62,7 +62,7 @@ test.finalizedBy jacocoTestReport
 
 // Optionally enable static analysis with -PstaticAnalysis=true
 if (project.hasProperty('staticAnalysis')) {
-    apply plugin: 'com.github.spotbugs'
+    apply plugin: 'com.github.spotbugs'build.gradle
 //    apply plugin: 'pmd'
 
     spotbugs {
