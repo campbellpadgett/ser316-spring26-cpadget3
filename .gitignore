@@ -2,7 +2,6 @@
 /.gradle/
 /build/
 /cls/
-/config/
 /.idea/
 /whitebox-testing.md
 /static-analysis.md
