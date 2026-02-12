@@ -39,12 +39,12 @@
 
 ### Initial Results (StaticAnalysis branch - before fixes)
 
-**Main source violations:** 103 (32 in checkout)
+**Main source violations:** 102 (31 in checkout)
 **Test source violations:** 116
 
 ### After Fixing Issues
 
-**Main source violations:** _____
+**Main source violations:** 80 (9 in checkout)
 **Violations fixed:** _____
 
 ---
