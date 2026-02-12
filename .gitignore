@@ -2,5 +2,9 @@
 /.gradle/
 /build/
 /cls/
-/config/
 /.idea/
+/whitebox-testing.md
+/static-analysis.md
+/blackbox-testing.md
+/code-review-checklist.md
+/img.png

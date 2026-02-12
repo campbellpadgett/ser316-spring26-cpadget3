@@ -1,8 +1,8 @@
 # White Box Testing Report - Assignment 3
 
-**Student Name:** [Your Name]
-**ASU ID:** [Your ASU ID]
-**Date:** [Date]
+**Student Name:** Campbell Padgett
+**ASU ID:** cpadget3
+**Date:** 2/4
 
 ---
 
@@ -16,26 +16,27 @@ Draw or describe your control flow graph here. Include:
 - Conditions at decision points
 
 **You can hand-draw and insert an image, or describe it in text format.**
+![img.png](img.png)
 
 ### Node Coverage Sequences
 
 List the sequences needed for complete node coverage:
 
 **Sequence 1:**
-- **Path:**
-- **Purpose:**
+- 351-351
+- Ensure that if type is null, we get 0
 - **Test case:**
 
 
 **Sequence 2:**
-- **Path:**
-- **Purpose:**
+- 358, 367, 374
+- Ensure that the looped is increased if the book is avilable 
 - **Test case:**
 
 
 **Sequence 3:**
-- **Path:**
-- **Purpose:**
+- 358, 365, 379 
+- Ensure that the looped is returned without increasing is the book type isn't matched
 - **Test case:**
 
 

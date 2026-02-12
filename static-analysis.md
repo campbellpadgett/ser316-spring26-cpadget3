@@ -1,22 +1,37 @@
 # Static Analysis Report - Assignment 4
 
-**Student Name:** [Your Name]
-**ASU ID:** [Your ASU ID]
-**Date:** [Date]
+**Student Name:** Campbell Padgett  
+**ASU ID:** cpadget3
+**Date:** 2/9
 
 ---
+
+**What is the Gradle wrapper and why is it useful for team projects?**
+- The wrapper means you can automate gradle in a CI pipeline. It also helps keep everyone using the same version of gradle.
 
 ## Part 1: GitHub Actions Setup
 
 **Which branches fail on GitHub Actions? Explain why.**
 
-1. **Branch:** ___________
-   - **Status:** Passing / Failing
-   - **Reason:**
+1. **Branch:** StaticAnalysis
+   - **Status:** Success
+   - **Reason:** Has gradle wrapper and checkstyle config file
 
-2. **Branch:** ___________
-   - **Status:** Passing / Failing
-   - **Reason:**
+2. **Branch:** Review
+   - **Status:** Failing
+   - **Reason:** does not have Gradle wrapper or checkstyle config folder
+
+3. **Branch:** Whitebox
+   - **Status:** Failing
+   - **Reason:** does not have Gradle wrapper or checkstyle config folder
+
+4. **Branch:** Blackbox
+   - **Status:** Failing
+   - **Reason:** Has gradle wrapper but no checkstyle config file
+
+5. **Branch:** main
+   - **Status:** Failing
+   - **Reason:** does not have Gradle wrapper or checkstyle config folder
 
 ---
 
@@ -24,13 +39,13 @@
 
 ### Initial Results (StaticAnalysis branch - before fixes)
 
-**Main source violations:** _____
-**Test source violations:** _____
+**Main source violations:** 102 (31 in checkout)
+**Test source violations:** 116
 
 ### After Fixing Issues
 
-**Main source violations:** _____
-**Violations fixed:** _____
+**Main source violations:** 80 (9 in checkout)
+**Violations fixed:** 22
 
 ---
 
@@ -38,24 +53,29 @@
 
 ### Initial Results (StaticAnalysis branch - before fixes)
 
-**Bugs found in main:** _____
+**Bugs found in main:** 7
 
 ### Bugs Fixed
 
-1. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+1. **Bug:** Comparison of String objects using ==
+   - **File:** Checkout.java
+   - **Location:** Line 330
+   - **Fix applied:** used .equals()
 
-2. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+2. **Bug:** checking for object equality with Comparison of String objects using ==
+   - **File:** Checkout.java
+   - **Location:** Line 204-213
+   - **Fix applied:** used Objects.isNull()
 
-3. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+3. **Bug:** returns a private field
+   - **File:** Checkout.java
+   - **Location:** Line 424
+   - **Fix applied:** made copy of field and returned that instead
+
+4. **Bug:** returns a private field
+   - **File:** Checkout.java
+   - **Location:** Line 428
+   - **Fix applied:** made copy of field and returned that instead
 
 ---
 
@@ -63,24 +83,26 @@
 
 ### Checkstyle Comparison
 
-| Branch | Main Violations | Test Violations | Total |
-|--------|----------------|-----------------|-------|
-| Blackbox | | | |
-| Review | | | |
-| StaticAnalysis (initial) | | | |
-| StaticAnalysis (after fixes) | | | |
+| Branch                       | Main Violations | Test Violations | Total |
+|------------------------------|-----------------|-----------------|-------|
+| Blackbox                     |                 | 141             | 141   |
+| Review                       |                 | 141             | 141   |
+| StaticAnalysis (initial)     | 102             | 116             | 218   |  
+| StaticAnalysis (after fixes) | 80              | 116             | 196   |
 
 ### SpotBugs Comparison
 
-| Branch | Main Bugs | Test Bugs | Total |
-|--------|-----------|-----------|-------|
-| Blackbox | | | |
-| Review | | | |
-| StaticAnalysis (initial) | | | |
-| StaticAnalysis (after fixes) | | | |
+| Branch                       | Main Bugs | Test Bugs | Total |
+|------------------------------|-----------|-----------|-------|
+| Blackbox                     | 7         |           | 7     |
+| Review                       | 7         |           | 7     |
+| StaticAnalysis (initial)     | 7         |           | 7     |
+| StaticAnalysis (after fixes) | 2         |           | 2     |
 
 **Did Review branch improve code quality compared to Blackbox?**
-
+Yes, it made it more maintainable, especially when dealing with the magic numbers and the 
+String and object equality checks. Now, the readability is greatly improved and the checks for null
+and equality can be relied on. 
 
 ---
 
