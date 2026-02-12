@@ -20,18 +20,18 @@ Review ALL source files (in main not test) in the project and identify defects u
 
 ## Defect Log
 
-| Defect ID | File          | Line(s) | Category | Description                                                                                                      | Severity |
-|-----------|---------------|---------|----------|------------------------------------------------------------------------------------------------------------------|----------|
-| 1 | Book.java     | 54-100  | CS       | Inconsistent use of "this" keyword in class getters and setup function (Coding Standards)                        | Low      |
-| 2 | Book.java     | 121-133 | CG       | Overly ocmplicated equality check in equals()                                                                    | Medium   |
-| 3 | Checkout.java | 241-247 | CG       | Use case of == instead of equals()                                                                               | Medium   |
-| 4 | Patron.java   | 161-164 | FD       | payFine() doesn't check for values > 0                                                                           | High     |
-| 5 | Book.java     | 105-110 | FD       | returnBook() arbitrairily sets a limit to the number of books that can be returned to 100 instead of totalCopies | High     |
-| 6 |               |         |          |                                                                                                                  |          |
-| 7 |               |         |          |                                                                                                                  |          |
-| 8 |               |         |          |                                                                                                                  |          |
-| 9 |               |         |          |                                                                                                                  |          |
-| 10 |               |         |          |                                                                                                                  |          |
+| Defect ID | File          | Line(s) | Category | Description                                                                                                     | Severity |
+|-----------|---------------|---------|----------|-----------------------------------------------------------------------------------------------------------------|----------|
+| 1         | Book.java     | 54-100  | CS       | Inconsistent use of "this" keyword in class getters and setup function (Coding Standards)                       | Low      |
+| 2         | Book.java     | 121-133 | CG       | Overly complicated equality check in equals()                                                                   | Medium   |
+| 3         | Checkout.java | 241-247 | CG       | Use case of == instead of equals()                                                                              | Medium   |
+| 4         | Patron.java   | 161-164 | FD       | payFine() doesn't check for values > 0                                                                          | High     |
+| 5         | Book.java     | 105-110 | FD       | returnBook() arbitrarily sets a limit to the number of books that can be returned to 100 instead of totalCopies | High     |
+| 6         | Checkout.java | 13      | CG       | MAX_FINE_AMOUNT is a mutable is not a constant so that could be changed in some way.                            | Low      |
+| 10        | Patron.java   | 108–114 | CG       | addFine(double amount) has an empty else block                                                                  | Medium   |
+| 8         | Checkout.java | 241–246 | FD       | isPatronType() compares Strings using == when it should be using .equals(...)                                   | High     |
+| 9         | Book.java     | 87–90   | FD       | setAvailableCopies(int copies) can accept negatvie values                                                       | High     |
+
 
 **Severity Levels:**
 - **Critical**: Causes system failure, data corruption, or security issues

@@ -158,8 +158,11 @@ public class Patron {
      * @param amount Amount to pay
      * @return Remaining balance
      */
-    public double payFine(double amount) {
-        this.fines = Math.max(0, this.fines - amount);
+    public double payFine(double amount)
+    {
+        if (amount <= 0) return this.fines;
+        this.fines = Math.max(0.0, this.fines - amount);
+
         return this.fines;
     }
 
