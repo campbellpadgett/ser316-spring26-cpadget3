@@ -419,11 +419,24 @@ public class Checkout {
         return looped;
     }
 
-    public Map<String, Book> getInventory() {
-        return bookList;
+    //SER316 TASK 2 SPOTBUGS FIX
+    public Map<String, Book> getInventory()
+    {
+
+        //SER316 TASK 2 SPOTBUGS FIX
+        Map<String, Book> blist = Map.of();
+        blist.putAll(this.bookList);
+
+        return blist;
     }
 
-    public Map<String, Patron> getPatrons() {
-        return patrons;
+    //SER316 TASK 2 SPOTBUGS FIX
+    public Map<String, Patron> getPatrons()
+    {
+        //SER316 TASK 2 SPOTBUGS FIX
+        Map<String, Patron> plist = Map.of();
+        plist.putAll(this.patrons);
+
+        return plist;
     }
 }

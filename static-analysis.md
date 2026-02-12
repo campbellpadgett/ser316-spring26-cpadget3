@@ -57,20 +57,25 @@
 
 ### Bugs Fixed
 
-1. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+1. **Bug:** Comparison of String objects using ==
+   - **File:** Checkout.java
+   - **Location:** Line 330
+   - **Fix applied:** used .equals()
 
-2. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+2. **Bug:** checking for object equality with Comparison of String objects using ==
+   - **File:** Checkout.java
+   - **Location:** Line 204-213
+   - **Fix applied:** used Objects.isNull()
 
-3. **Bug:** [Brief description]
-   - **File:** [Filename]
-   - **Location:** Line ___
-   - **Fix applied:**
+3. **Bug:** returns a private field
+   - **File:** Checkout.java
+   - **Location:** Line 424
+   - **Fix applied:** made copy of field and returned that instead
+
+4. **Bug:** returns a private field
+   - **File:** Checkout.java
+   - **Location:** Line 428
+   - **Fix applied:** made copy of field and returned that instead
 
 ---
 
