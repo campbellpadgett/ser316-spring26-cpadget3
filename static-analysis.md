@@ -83,12 +83,12 @@
 
 ### Checkstyle Comparison
 
-| Branch | Main Violations | Test Violations | Total |
-|--------|----------------|-----------------|-------|
-| Blackbox | | | |
-| Review | | | |
-| StaticAnalysis (initial) | | | |
-| StaticAnalysis (after fixes) | | | |
+| Branch                       | Main Violations | Test Violations | Total |
+|------------------------------|-----------------|-----------------|-------|
+| Blackbox                     |                 |                 |       |
+| Review                       |                 | 141             | 141   |
+| StaticAnalysis (initial)     | 102             | 116             | 218   |  
+| StaticAnalysis (after fixes) | 80              | 116             | 196   |
 
 ### SpotBugs Comparison
 
