@@ -85,22 +85,24 @@
 
 | Branch                       | Main Violations | Test Violations | Total |
 |------------------------------|-----------------|-----------------|-------|
-| Blackbox                     |                 |                 |       |
+| Blackbox                     |                 | 141             | 141   |
 | Review                       |                 | 141             | 141   |
 | StaticAnalysis (initial)     | 102             | 116             | 218   |  
 | StaticAnalysis (after fixes) | 80              | 116             | 196   |
 
 ### SpotBugs Comparison
 
-| Branch | Main Bugs | Test Bugs | Total |
-|--------|-----------|-----------|-------|
-| Blackbox | | | |
-| Review | | | |
-| StaticAnalysis (initial) | | | |
-| StaticAnalysis (after fixes) | | | |
+| Branch                       | Main Bugs | Test Bugs | Total |
+|------------------------------|-----------|-----------|-------|
+| Blackbox                     | 7         |           | 7     |
+| Review                       | 7         |           | 7     |
+| StaticAnalysis (initial)     | 7         |           | 7     |
+| StaticAnalysis (after fixes) | 2         |           | 2     |
 
 **Did Review branch improve code quality compared to Blackbox?**
-
+Yes, it made it more maintainable, especially when dealing with the magic numbers and the 
+String and object equality checks. Now, the readability is greatly improved and the checks for null
+and equality can be relied on. 
 
 ---
 
