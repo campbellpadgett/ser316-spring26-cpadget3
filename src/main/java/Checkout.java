@@ -12,10 +12,17 @@ import java.util.Map;
 public class Checkout {
     private static final double ELIGABLE = 0.0;
     private static final double MAX_FINE_AMOUNT = 25.0;
+    private static final double MAX_CHECKOUT = 3.2;
     private static final double NULL_PATRON = 3.1;
     private static final double SUSPENDED_ACCT = 3.0;
     private static final double OVERDUE_BOOKS = 4.0;
+    private static final double TEN_DOLLAR_FINE = 10.0;
     private static final double TEN_PLUS_FINE = 4.1;
+    private static final double NULL_BOOK = 2.1;
+    private static final double REFERENCE_BOOK = 5.0;
+    private static final double SUCCESS_RENEWAL = 0.1;
+    private static final double SUCCESS_WARNING = 1.1;
+    private static final double AVAILABLE_BOOK = 2.0;
 
     private Map<String, Book> bookList; // ISBN -> Book
     private Map<String, Patron> patrons; // PatronID -> Patron
@@ -93,7 +100,7 @@ public class Checkout {
         if (patron.getOverdueCount() >= 3) {
             return OVERDUE_BOOKS;
         }
-        if (patron.getFineBalance() >= 10.0) {
+        if (patron.getFineBalance() >= TEN_DOLLAR_FINE) {
             return TEN_PLUS_FINE;
         }
         return ELIGABLE; // Eligible
@@ -112,15 +119,18 @@ public class Checkout {
      *
      * Return codes:
      *   0.0 - Success, book checked out normally
-     *   0.1 - Success, renewal (patron already had this book, renewal sets the due date to (today + patron.getLoanPeriodDays()).)
+     *   0.1 - Success, renewal (patron already had this book,
+     *      renewal sets the due date to (today + patron.getLoanPeriodDays()).)
      *   1.0 - Success with warning (patron has 1-2 overdue books)
      *   1.1 - Success with warning (patron within 2 of max checkout limit after this checkout)
-     *        Max limits: FACULTY=20 (e.g. warning at 18, 19, 20 including current checkout), STAFF=15, STUDENT=10, PUBLIC=5, CHILD=3
+     *        Max limits: FACULTY=20 (e.g. warning at 18, 19, 20 including current checkout),
+     *        STAFF=15, STUDENT=10, PUBLIC=5, CHILD=3
      *   2.0 - Book unavailable (all copies checked out)
      *   2.1 - Book is null
      *   3.0 - Patron account is suspended
      *   3.1 - Patron is null
-     *   3.2 - Patron at maximum checkout limit (FACULTY=20, STAFF=15, STUDENT=10, PUBLIC=5, CHILD=3)
+     *   3.2 - Patron at maximum checkout limit
+     *      (FACULTY=20, STAFF=15, STUDENT=10, PUBLIC=5, CHILD=3)
      *   4.0 - Patron has 3 or more overdue books
      *   4.1 - Patron has $10.00 or more in unpaid fines
      *   5.0 - Book is reference-only (cannot be checked out)
@@ -138,22 +148,31 @@ public class Checkout {
      *   5. If not-renewal
      *      5.1. Check if book is available (2.0)
      *      5.2. Check if patron is at max checkout limit (3.2)
-     *      5.3. Process checkout (update patron checkedOutBooks, call book.checkout()), then determine success code (priority 1.0, then 1.1, else 0.0)
+     *      5.3. Process checkout (update patron checkedOutBooks, call book.checkout()),
+     *          then determine success code (priority 1.0, then 1.1, else 0.0)
      *
      *
      * Success non-renewal:
-     *   - book will be added to list of checkedOutBooks of patron with dueDate = today + patron.getLoanPeriodDays()
+     *   - book will be added to list of checkedOutBooks of patron with
+     *          dueDate = today + patron.getLoanPeriodDays()
      *   - book.checkout() will be called reducing the availability by 1
      *
      * Success renewal:
-     *  - patron.getCheckedOutBooks() is updated to today + loanPeriodDays; book.checkout() is not called; available copies do not change.
+     *  - patron.getCheckedOutBooks() is updated to today + loanPeriodDays; b
+     *      ook.checkout() is not called; available copies do not change.
      *
      * Additional notes:
-     *  - getCheckoutCount() refers to the number of books currently checked out (size of the patron's checked-out collection), not lifetime transactions; renewals do not increase this count.
-     *  - For any non-success return code (2.x–5.x), neither the patron's checked-out books nor the book's available copies should change.
-     *  - Tests may assume due dates equal LocalDate.now().plusDays(patron.getLoanPeriodDays()) on the day the test runs.
-     *  - A book is unavailable if and only if book.getAvailableCopies() <= 0 (i.e., book.isAvailable() is false).
-     *  - Console output (including Easter eggs) is non-functional and should not be asserted in tests.
+     *  - getCheckoutCount() refers to the number of books currently checked out
+     *      (size of the patron's checked-out collection), not lifetime transactions;
+     *      renewals do not increase this count.
+     *  - For any non-success return code (2.x–5.x), neither the patron's checked-out
+     *      books nor the book's available copies should change.
+     *  - Tests may assume due dates equal
+     *      LocalDate.now().plusDays(patron.getLoanPeriodDays()) on the day the test runs.
+     *  - A book is unavailable if and only if book.getAvailableCopies() <= 0
+     *      (i.e., book.isAvailable() is false).
+     *  - Console output (including Easter eggs) is non-functional and should not be
+     *      asserted in tests.
      *
      * @param book The book to checkout (can be null)
      * @param patron The patron checking out the book (can be null)
@@ -169,8 +188,8 @@ public class Checkout {
             return eligable;
         }
 
-        if (book == null) return 2.1;
-        if (book.isReferenceOnly()) return 5.0;
+        if (book == null) return NULL_BOOK;
+        if (book.isReferenceOnly()) return REFERENCE_BOOK;
 
 
         LocalDate now = LocalDate.now();
@@ -180,14 +199,14 @@ public class Checkout {
             patron.addCheckedOutBook(book.getIsbn(), dueDate);
             history.add(new Transaction(patron, book, now, dueDate));
 
-            return 0.1;
+            return SUCCESS_RENEWAL;
         }
 
         // availability check
-        if (!book.isAvailable()) return 2.0;
+        if (!book.isAvailable()) return AVAILABLE_BOOK;
 
         // max check
-        if (patron.getCheckoutCount() >= patron.getMaxCheckoutLimit()) return 3.2;
+        if (patron.getCheckoutCount() >= patron.getMaxCheckoutLimit()) return MAX_CHECKOUT;
 
         // checkout
         patron.addCheckedOutBook(book.getIsbn(), dueDate);
@@ -199,7 +218,7 @@ public class Checkout {
 
         int max = patron.getMaxCheckoutLimit();
         int countAfter = patron.getCheckoutCount();
-        if (countAfter >= (max - 2)) return 1.1;
+        if (countAfter >= (max - 2)) return SUCCESS_WARNING;
 
         return 0.0;
 
