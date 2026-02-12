@@ -10,7 +10,12 @@ import java.util.Map;
  * Handles book checkouts, returns, renewals, and fine calculations.
  */
 public class Checkout {
+    private static final double ELIGABLE = 0.0;
     private static final double MAX_FINE_AMOUNT = 25.0;
+    private static final double NULL_PATRON = 3.1;
+    private static final double SUSPENDED_ACCT = 3.0;
+    private static final double OVERDUE_BOOKS = 4.0;
+    private static final double TEN_PLUS_FINE = 4.1;
 
     private Map<String, Book> bookList; // ISBN -> Book
     private Map<String, Patron> patrons; // PatronID -> Patron
@@ -80,18 +85,18 @@ public class Checkout {
      */
     public double validatePatronEligibility(Patron patron) {
         if (patron == null) {
-            return 3.1;
+            return NULL_PATRON;
         }
         if (patron.isAccountSuspended()) {
-            return 3.0;
+            return SUSPENDED_ACCT;
         }
         if (patron.getOverdueCount() >= 3) {
-            return 4.0;
+            return OVERDUE_BOOKS;
         }
         if (patron.getFineBalance() >= 10.0) {
-            return 4.1;
+            return TEN_PLUS_FINE;
         }
-        return 0.0; // Eligible
+        return ELIGABLE; // Eligible
     }
 
     /**
