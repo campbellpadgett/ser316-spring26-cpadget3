@@ -23,6 +23,8 @@ public class Checkout {
     private static final double SUCCESS_RENEWAL = 0.1;
     private static final double SUCCESS_WARNING = 1.1;
     private static final double AVAILABLE_BOOK = 2.0;
+    private static final int ISBN_TEN = 10;
+    private static final int ISBN_THIRTEEN = 13;
 
     private Map<String, Book> bookList; // ISBN -> Book
     private Map<String, Patron> patrons; // PatronID -> Patron
@@ -310,7 +312,7 @@ public class Checkout {
 
         // Check length (must be 10 or 13 digits)
         int length = numbers.length();
-        return length == 10 || length == 13;
+        return length == ISBN_TEN || length == ISBN_THIRTEEN;
     }
 
     /**
