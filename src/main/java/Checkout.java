@@ -1,9 +1,6 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Manages library checkout operations.
@@ -323,11 +320,13 @@ public class Checkout {
      * @return true if types match
      */
     public boolean isPatronType(String typeString, Patron.PatronType expectedType) {
-        if (typeString == null || expectedType == null) {
+       //SER316 TASK 2 SPOTBUGS FIX
+        if (Objects.isNull(typeString) || Objects.isNull(expectedType)) {
             return false;
         }
 
-        return typeString == expectedType.toString();
+        //SER316 TASK 2 SPOTBUGS FIX
+        return typeString.equals(expectedType.toString());
     }
 
     /**

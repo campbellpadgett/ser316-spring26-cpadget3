@@ -45,7 +45,7 @@
 ### After Fixing Issues
 
 **Main source violations:** 80 (9 in checkout)
-**Violations fixed:** _____
+**Violations fixed:** 22
 
 ---
 
@@ -53,7 +53,7 @@
 
 ### Initial Results (StaticAnalysis branch - before fixes)
 
-**Bugs found in main:** _____
+**Bugs found in main:** 7
 
 ### Bugs Fixed
 
