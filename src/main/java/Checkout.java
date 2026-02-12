@@ -10,7 +10,7 @@ import java.util.Map;
  * Handles book checkouts, returns, renewals, and fine calculations.
  */
 public class Checkout {
-    public static double MAX_FINE_AMOUNT = 25.0;
+    private static final double MAX_FINE_AMOUNT = 25.0;
 
     private Map<String, Book> bookList; // ISBN -> Book
     private Map<String, Patron> patrons; // PatronID -> Patron
@@ -35,16 +35,31 @@ public class Checkout {
         }
     }
 
+    /**
+     * Constructor for the Checkout class, no inputs are needed.
+     */
     public Checkout() {
         this.bookList = new HashMap<>();
         this.patrons = new HashMap<>();
         this.history = new ArrayList<>();
     }
 
+    /**
+     * Adds instance of Book class to bookList by isbn number
+     *
+     * @param book an instance of the book class to add
+     * @return void
+     */
     public void addBook(Book book) {
         bookList.put(book.getIsbn(), book);
     }
 
+    /**
+     * Adds instance of Patron class to add by patron id
+     *
+     * @param patron an instance of the Patron class to add
+     * @return void
+     */
     public void registerPatron(Patron patron) {
         patrons.put(patron.getPatronId(), patron);
     }

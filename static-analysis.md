@@ -14,24 +14,24 @@
 **Which branches fail on GitHub Actions? Explain why.**
 
 1. **Branch:** StaticAnalysis
-   - **Status:** Failing
-   - **Reason:** Error: Cannot locate Gradle wrapper properties
+   - **Status:** Success
+   - **Reason:** Has gradle wrapper and checkstyle config file
 
 2. **Branch:** Review
    - **Status:** Failing
-   - **Reason:** Error: Cannot locate Gradle wrapper properties
+   - **Reason:** does not have Gradle wrapper or checkstyle config folder
 
 3. **Branch:** Whitebox
    - **Status:** Failing
-   - **Reason:** Error: Cannot locate Gradle wrapper properties
+   - **Reason:** does not have Gradle wrapper or checkstyle config folder
 
 4. **Branch:** Blackbox
    - **Status:** Failing
-   - **Reason:** Error: Cannot locate Gradle wrapper properties
+   - **Reason:** Has gradle wrapper but no checkstyle config file
 
 5. **Branch:** main
    - **Status:** Failing
-   - **Reason:** Error: Cannot locate Gradle wrapper properties
+   - **Reason:** does not have Gradle wrapper or checkstyle config folder
 
 ---
 
@@ -39,8 +39,8 @@
 
 ### Initial Results (StaticAnalysis branch - before fixes)
 
-**Main source violations:** _____
-**Test source violations:** _____
+**Main source violations:** 103 (32 in checkout)
+**Test source violations:** 116
 
 ### After Fixing Issues
 
