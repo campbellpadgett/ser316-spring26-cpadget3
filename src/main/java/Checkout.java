@@ -419,6 +419,11 @@ public class Checkout {
         return looped;
     }
 
+
+    /**
+     * provides a Map of all books within inventory
+     * @return Map<String, Book> a map of the books in inventory associated with isbn numebrs
+     */
     //SER316 TASK 2 SPOTBUGS FIX
     public Map<String, Book> getInventory()
     {
@@ -430,6 +435,10 @@ public class Checkout {
         return blist;
     }
 
+    /**
+     * provides a Map of all Patrons who have a relation to the library
+     * @return Map<String, Patron> a map of the Patrons with a relationship to the library
+     */
     //SER316 TASK 2 SPOTBUGS FIX
     public Map<String, Patron> getPatrons()
     {

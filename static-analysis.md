@@ -111,20 +111,22 @@ and equality can be relied on.
 ### Merge Strategy
 
 **How did you merge Review and StaticAnalysis into Dev?**
+I started with Review and had only one conflict. Then I merged Static Analysis and kept all the changes made there for dev to now have
 
 
-**Merge conflicts encountered:** _____
+**Merge conflicts encountered:** 8
 
 ### Dev Branch Quality After Merge
 
-**Checkstyle violations:** _____
-**SpotBugs issues:** _____
+**Checkstyle violations:** 4
+**SpotBugs issues:** 4
 
 **Did quality improve or worsen? Explain:**
 
+With respect to Checkout.java, it improved, through there were two new instances of there being no javadoc after the merge. 
 
 **Build successful:** [Yes/No]
-
+Yes
 ---
 
 ## Part 6: Reflection
