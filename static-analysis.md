@@ -132,11 +132,13 @@ Yes
 ## Part 6: Reflection
 
 **Do you think your code got better through this process?**
+Yes. After reading through the memoranda project files, I now have a greater appreciation for javadoc comments and for style consistency
 
 
 **In what order would you use these quality practices in the future?**
-
+I would have checked first for error and warnings first, then move on the style consistency
 
 **Most valuable lesson:**
-
+I would say it's that testing can require the same level of effort as the actual writing on the code 
+and that writing with a detailed description in javadocs can save you a lot of time
 
