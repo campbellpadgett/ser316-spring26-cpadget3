@@ -85,7 +85,13 @@ public class Book {
     }
 
     // Setters
-    public void setAvailableCopies(int copies) {
+
+    /**
+     * @param copies a positive number of copies that exist for the book
+     */
+    public void setAvailableCopies(int copies) throws Exception {
+        if (copies < 0) throw new Exception("copies cannot be negative");
+
         this.availableCopies = copies;
         this.available = (copies > 0);
     }

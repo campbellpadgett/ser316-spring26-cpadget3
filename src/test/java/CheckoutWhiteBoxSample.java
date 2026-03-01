@@ -34,7 +34,7 @@ public class CheckoutWhiteBoxSample {
 
     @Test
     @DisplayName("WB Test 2: countBooksByType (358, 367, 374)")
-    public void testCountBooksByType_OnlyAvailableTrue_IncrementsWhenAvailableAndTypeMatches()
+    public void testCountBooksByType_OnlyAvailableTrue_IncrementsWhenAvailableAndTypeMatches() throws Exception
     {
         // Arrange: 2 FICTION books, one available and one unavailable; plus a non-matching available book
         Book fictionAvailable = new Book("1111111111", "Book 1", "Author 1", Book.BookType.FICTION, 2);
