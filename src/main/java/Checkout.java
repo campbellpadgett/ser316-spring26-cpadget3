@@ -90,13 +90,15 @@ public class Checkout {
      * @return 0.0 if eligible, or appropriate error code (3.1, 3.0, 4.0, 4.1)
      */
     public double validatePatronEligibility(Patron patron) {
+        final int MAX_OVERDUE_BOOKS = 3;
+
         if (patron == null) {
             return NULL_PATRON;
         }
         if (patron.isAccountSuspended()) {
             return SUSPENDED_ACCT;
         }
-        if (patron.getOverdueCount() >= 3) {
+        if (patron.getOverdueCount() >= MAX_OVERDUE_BOOKS) {
             return OVERDUE_BOOKS;
         }
         if (patron.getFineBalance() >= TEN_DOLLAR_FINE) {
@@ -248,6 +250,12 @@ public class Checkout {
      * @return Fine amount in dollars
      */
     public double calculateFine(int numOfDays, Book.BookType bookType) {
+        final int WEEK = 7;
+        final double WEEK_FINE = 0.25;
+        final int TWO_WEEKS = 14;
+        final double TWO_WEEKS_FINE = 0.50;
+        final double TWO_WEEKS_PLUS_FINE = 0.50;
+
         if (numOfDays <= 0) {
             return 0.0;
         }
@@ -255,19 +263,19 @@ public class Checkout {
         double fine = 0.0;
 
         // First 7 days: $0.25/day
-        int days1 = Math.min(numOfDays, 7);
-        fine += days1 * 0.25;
+        int days1 = Math.min(numOfDays, WEEK);
+        fine += days1 * WEEK_FINE;
 
         // Days 8-14: $0.50/day
-        if (numOfDays > 7) {
-            int days2 = Math.min(numOfDays - 7, 7);
-            fine += days2 * 0.50;
+        if (numOfDays > WEEK) {
+            int days2 = Math.min(numOfDays - WEEK, WEEK);
+            fine += days2 * TWO_WEEKS_FINE;
         }
 
         // Days 15+: $1.00/day
-        if (numOfDays > 14) {
-            int days3 = numOfDays - 14;
-            fine += days3 * 1.00;
+        if (numOfDays > TWO_WEEKS) {
+            int days3 = numOfDays - TWO_WEEKS;
+            fine += days3 * TWO_WEEKS_PLUS_FINE;
         }
 
         // Double rate for REFERENCE and TEXTBOOK
