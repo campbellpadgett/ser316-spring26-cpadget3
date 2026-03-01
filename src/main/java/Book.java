@@ -69,7 +69,7 @@ public class Book {
     }
 
     public boolean isAvailable() {
-        return availableCopies > 0;
+        return this.available;
     }
 
     public boolean isReferenceOnly() {
