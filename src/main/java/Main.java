@@ -70,21 +70,21 @@ public class Main {
 
         System.out.println("--- Scenario 5: Testing helper methods ---");
         System.out.println("\nvalidatePatronEligibility() tests:");
-        System.out.println("Student eligibility: " + checkout.validatePatronEligibility(student));
-        System.out.println("Child eligibility: " + checkout.validatePatronEligibility(child));
+        System.out.println("Student eligibility: " + Patron.validatePatronEligibility(student));
+        System.out.println("Child eligibility: " + Patron.validatePatronEligibility(child));
 
         System.out.println("\ncalculateFine() tests:");
         System.out.println("5 days overdue (FICTION): $" +
-            String.format("%.2f", checkout.calculateFine(5, Book.BookType.FICTION)));
+            String.format("%.2f", Transaction.calculateFine(5, Book.BookType.FICTION)));
         System.out.println("10 days overdue (TEXTBOOK): $" +
-            String.format("%.2f", checkout.calculateFine(10, Book.BookType.TEXTBOOK)));
+            String.format("%.2f", Transaction.calculateFine(10, Book.BookType.TEXTBOOK)));
         System.out.println("30 days overdue (REFERENCE): $" +
-            String.format("%.2f", checkout.calculateFine(30, Book.BookType.REFERENCE)));
+            String.format("%.2f", Transaction.calculateFine(30, Book.BookType.REFERENCE)));
 
         System.out.println("\nisValidISBN() tests:");
-        System.out.println("'978-0-1234-5678-9' valid? " + checkout.isValidISBN("978-0-1234-5678-9"));
-        System.out.println("'123456789X' valid? " + checkout.isValidISBN("123456789X"));
-        System.out.println("'978-INVALID' valid? " + checkout.isValidISBN("978-INVALID"));
+        System.out.println("'978-0-1234-5678-9' valid? " + Inventory.isValidISBN("978-0-1234-5678-9"));
+        System.out.println("'123456789X' valid? " + Inventory.isValidISBN("123456789X"));
+        System.out.println("'978-INVALID' valid? " + Inventory.isValidISBN("978-INVALID"));
 
         System.out.println("\n=== Demo Complete ===");
     }

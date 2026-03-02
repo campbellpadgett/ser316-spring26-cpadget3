@@ -7,44 +7,16 @@ import java.util.*;
  * Handles book checkouts, returns, renewals, and fine calculations.
  */
 public class Checkout {
-    private static final double ELIGABLE = 0.0;
-    private static final double MAX_FINE_AMOUNT = 25.0;
     private static final double MAX_CHECKOUT = 3.2;
-    private static final double NULL_PATRON = 3.1;
-    private static final double SUSPENDED_ACCT = 3.0;
-    private static final double OVERDUE_BOOKS = 4.0;
-    private static final double TEN_DOLLAR_FINE = 10.0;
-    private static final double TEN_PLUS_FINE = 4.1;
     private static final double NULL_BOOK = 2.1;
     private static final double REFERENCE_BOOK = 5.0;
     private static final double SUCCESS_RENEWAL = 0.1;
     private static final double SUCCESS_WARNING = 1.1;
     private static final double AVAILABLE_BOOK = 2.0;
-    private static final int ISBN_TEN = 10;
-    private static final int ISBN_THIRTEEN = 13;
 
     private Map<String, Book> bookList; // ISBN -> Book
     private Map<String, Patron> patrons; // PatronID -> Patron
     private List<Transaction> history; //
-
-    /**
-     * Inner class to track checkout transactions.
-     */
-    private static class Transaction {
-        Patron patron;
-        Book book;
-        LocalDate checkoutDate;
-        LocalDate dueDate;
-        LocalDate returnDate;
-
-        Transaction(Patron patron, Book book, LocalDate checkoutDate, LocalDate dueDate) {
-            this.patron = patron;
-            this.book = book;
-            this.checkoutDate = checkoutDate;
-            this.dueDate = dueDate;
-            this.returnDate = null;
-        }
-    }
 
     /**
      * Constructor for the Checkout class, no inputs are needed.
@@ -73,38 +45,6 @@ public class Checkout {
      */
     public void registerPatron(Patron patron) {
         patrons.put(patron.getPatronId(), patron);
-    }
-
-    /**
-     * Validates if a patron is eligible to check out books you can assume this method is correct.
-     * This helper method consolidates patron-related eligibility checks.
-     * Students can assume this method is correct and use it in their implementation.
-     *
-     * Returns error codes for the following conditions (checked in order):
-     * - Patron is null → 3.1
-     * - Account is suspended → 3.0
-     * - Has 3 or more overdue books → 4.0
-     * - Has $10.00 or more in fines → 4.1
-     *
-     * @param patron The patron to validate
-     * @return 0.0 if eligible, or appropriate error code (3.1, 3.0, 4.0, 4.1)
-     */
-    public double validatePatronEligibility(Patron patron) {
-        final int MAX_OVERDUE_BOOKS = 3;
-
-        if (patron == null) {
-            return NULL_PATRON;
-        }
-        if (patron.isAccountSuspended()) {
-            return SUSPENDED_ACCT;
-        }
-        if (patron.getOverdueCount() >= MAX_OVERDUE_BOOKS) {
-            return OVERDUE_BOOKS;
-        }
-        if (patron.getFineBalance() >= TEN_DOLLAR_FINE) {
-            return TEN_PLUS_FINE;
-        }
-        return ELIGABLE; // Eligible
     }
 
     /**
@@ -181,10 +121,7 @@ public class Checkout {
      */
     public double checkoutBook(Book book, Patron patron)
     {
-
-
-
-        double eligable = validatePatronEligibility(patron);
+        double eligable = Patron.validatePatronEligibility(patron);
         if (eligable != 0.0) {
             return eligable;
         }
@@ -225,159 +162,6 @@ public class Checkout {
 
 //        // Normal success
 //        return 0.0;
-    }
-
-
-
-    /**
-     * Calculates the fine amount for an overdue book. Assume this javadoc is correct.
-     *
-     * Fine calculation rules:
-     * - First 7 days overdue: $0.25 per day
-     * - Days 8-14 overdue: $0.50 per day
-     * - Days 15+ overdue: $1.00 per day
-     * - REFERENCE and TEXTBOOK types: double the normal rate
-     * - Maximum fine per book: $25.00
-     *
-     * Examples:
-     * - 5 days overdue, FICTION: 5 * $0.25 = $1.25
-     * - 10 days overdue, NONFICTION: (7 * $0.25) + (3 * $0.50) = $3.25
-     * - 20 days overdue, TEXTBOOK: ((7*$0.25) + (7*$0.50) + (6*$1.00)) * 2 = $23.50
-     * - 50 days overdue, FICTION: would be $41.75, but capped at $25.00
-     *
-     * @param numOfDays Number of days the book is overdue
-     * @param bookType The type of book (affects fine rate)
-     * @return Fine amount in dollars
-     */
-    public double calculateFine(int numOfDays, Book.BookType bookType) {
-        final int WEEK = 7;
-        final double WEEK_FINE = 0.25;
-        final int TWO_WEEKS = 14;
-        final double TWO_WEEKS_FINE = 0.50;
-        final double TWO_WEEKS_PLUS_FINE = 0.50;
-
-        if (numOfDays <= 0) {
-            return 0.0;
-        }
-
-        double fine = 0.0;
-
-        // First 7 days: $0.25/day
-        int days1 = Math.min(numOfDays, WEEK);
-        fine += days1 * WEEK_FINE;
-
-        // Days 8-14: $0.50/day
-        if (numOfDays > WEEK) {
-            int days2 = Math.min(numOfDays - WEEK, WEEK);
-            fine += days2 * TWO_WEEKS_FINE;
-        }
-
-        // Days 15+: $1.00/day
-        if (numOfDays > TWO_WEEKS) {
-            int days3 = numOfDays - TWO_WEEKS;
-            fine += days3 * TWO_WEEKS_PLUS_FINE;
-        }
-
-        // Double rate for REFERENCE and TEXTBOOK
-        if (bookType == Book.BookType.REFERENCE || bookType == Book.BookType.TEXTBOOK) {
-            fine *= 2.0;
-        }
-
-        // Cap at maximum fine amount
-        return Math.min(fine, MAX_FINE_AMOUNT);
-    }
-
-    /**
-     * Validates ISBN format you can assume this javadoc is correct.
-     * Valid formats:
-     * - ISBN-10: 10 digits (e.g., "0123456789")
-     * - ISBN-13: 13 digits (e.g., "9780123456789")
-     * - ISBN with hyphens: XXX-X-XXXX-XXXX-X (e.g., "978-0-1234-5678-9")
-     *
-     * Invalid:
-     * - null or empty strings
-     * - Contains letters or special characters (except hyphens)
-     * - Wrong number of digits after removing hyphens
-     *
-     * @param isbn The ISBN string to validate
-     * @return true if valid format, false otherwise
-     */
-    public boolean isValidISBN(String isbn) {
-        if (isbn == null || isbn.isEmpty()) {
-            return false;
-        }
-
-
-        String numbers = isbn.replace("-", "");
-
-        // Check if all remaining characters are digits
-        if (!numbers.matches("\\d+")) {
-            return false;
-        }
-
-        // Check length (must be 10 or 13 digits)
-        int length = numbers.length();
-        return length == ISBN_TEN || length == ISBN_THIRTEEN;
-    }
-
-    /**
-     * Checks if a patron type string matches a given type.
-     *
-     * @param typeString The type as a string
-     * @param expectedType The expected patron type
-     * @return true if types match
-     */
-    public boolean isPatronType(String typeString, Patron.PatronType expectedType) {
-       //SER316 TASK 2 SPOTBUGS FIX
-        if (Objects.isNull(typeString) || Objects.isNull(expectedType)) {
-            return false;
-        }
-
-        //SER316 TASK 2 SPOTBUGS FIX
-        return typeString.equals(expectedType.toString());
-    }
-
-    /**
-     * Processes a book return.
-     * Calculates any overdue fines and updates patron/book status.
-     *
-     * @param isbn The ISBN of the book being returned
-     * @param patron The patron returning the book
-     * @return Fine amount charged (0.0 if not overdue)
-     */
-    public double returnBook(String isbn, Patron patron) {
-        if (patron == null || !patron.hasBookCheckedOut(isbn)) {
-            return -1.0;
-        }
-
-        Book book = bookList.get(isbn);
-        if (book == null) {
-            return -1.0;
-        }
-
-        LocalDate dueDate = patron.getCheckedOutBooks().get(isbn);
-        LocalDate today = LocalDate.now();
-        long daysOverdue = ChronoUnit.DAYS.between(dueDate, today);
-
-        double fine = 0.0;
-        if (daysOverdue > 0) {
-            fine = calculateFine((int) daysOverdue, book.getType());
-            patron.addFine(fine);
-        }
-
-        // Update patron and book
-        patron.removeCheckedOutBook(isbn);
-        book.returnBook();
-
-        // Update transaction history to mark book as returned
-        for (Transaction t : history) {
-            if (t.patron.equals(patron) && t.book.equals(book) && t.returnDate == null) {
-                t.returnDate = today;
-                break;
-            }
-        }
-
-        return fine;
     }
 
     /**
@@ -427,33 +211,46 @@ public class Checkout {
         return looped;
     }
 
-
     /**
-     * provides a Map of all books within inventory
-     * @return Map<String, Book> a map of the books in inventory associated with isbn numebrs
+     * Processes a book return.
+     * Calculates any overdue fines and updates patron/book status.
+     *
+     * @param isbn The ISBN of the book being returned
+     * @param patron The patron returning the book
+     * @return Fine amount charged (0.0 if not overdue)
      */
-    //SER316 TASK 2 SPOTBUGS FIX
-    public Map<String, Book> getInventory()
-    {
+    public double returnBook(String isbn, Patron patron) {
+        if (patron == null || !patron.hasBookCheckedOut(isbn)) {
+            return -1.0;
+        }
 
-        //SER316 TASK 2 SPOTBUGS FIX
-        Map<String, Book> blist = Map.of();
-        blist.putAll(this.bookList);
+        Book book = bookList.get(isbn);
+        if (book == null) {
+            return -1.0;
+        }
 
-        return blist;
-    }
+        LocalDate dueDate = patron.getCheckedOutBooks().get(isbn);
+        LocalDate today = LocalDate.now();
+        long daysOverdue = ChronoUnit.DAYS.between(dueDate, today);
 
-    /**
-     * provides a Map of all Patrons who have a relation to the library
-     * @return Map<String, Patron> a map of the Patrons with a relationship to the library
-     */
-    //SER316 TASK 2 SPOTBUGS FIX
-    public Map<String, Patron> getPatrons()
-    {
-        //SER316 TASK 2 SPOTBUGS FIX
-        Map<String, Patron> plist = Map.of();
-        plist.putAll(this.patrons);
+        double fine = 0.0;
+        if (daysOverdue > 0) {
+            fine = Transaction.calculateFine((int) daysOverdue, book.getType());
+            patron.addFine(fine);
+        }
 
-        return plist;
+        // Update patron and book
+        patron.removeCheckedOutBook(isbn);
+        book.returnBook();
+
+        // Update transaction history to mark book as returned
+        for (Transaction t : history) {
+            if (t.patron.equals(patron) && t.book.equals(book) && t.returnDate == null) {
+                t.returnDate = today;
+                break;
+            }
+        }
+
+        return fine;
     }
 }

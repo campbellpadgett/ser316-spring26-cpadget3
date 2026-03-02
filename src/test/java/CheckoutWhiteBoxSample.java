@@ -78,40 +78,40 @@ public class CheckoutWhiteBoxSample {
     @DisplayName("WB Test 4: isValidISBN - null and empty check")
     public void testIsValidISBN_NullAndEmpty_False()
     {
-        assertFalse(checkout.isValidISBN(null));
-        assertFalse(checkout.isValidISBN(""));
+        assertFalse(Inventory.isValidISBN(null));
+        assertFalse(Inventory.isValidISBN(""));
     }
 
     @Test
     @DisplayName("WB Test 5: isValidISBN - contains letters check")
     public void testIsValidISBN_NonDigits_False()
     {
-        assertFalse(checkout.isValidISBN("978-0-12A4-5678-9"));
-        assertFalse(checkout.isValidISBN("01234!6789"));
+        assertFalse(Inventory.isValidISBN("978-0-12A4-5678-9"));
+        assertFalse(Inventory.isValidISBN("01234!6789"));
     }
 
     @Test
     @DisplayName("WBTest 6: calculateFine - numOfDays check")
     public void testCalculateFine_NonPositiveDays_Zero()
     {
-        assertEquals(0.0, checkout.calculateFine(0, Book.BookType.FICTION), 0.0001);
-        assertEquals(0.0, checkout.calculateFine(-5, Book.BookType.FICTION), 0.0001);
+        assertEquals(0.0, Transaction.calculateFine(0, Book.BookType.FICTION), 0.0001);
+        assertEquals(0.0, Transaction.calculateFine(-5, Book.BookType.FICTION), 0.0001);
     }
 
     @Test
     @DisplayName("WB Test 7: calculateFine - rates for fiction and nonfition check")
     public void testCalculateFine_Tiers()
     {
-        assertEquals(1.25, checkout.calculateFine(5, Book.BookType.FICTION), 0.0001);
-        assertEquals(3.25, checkout.calculateFine(10, Book.BookType.NONFICTION), 0.0001);
+        assertEquals(1.25, Transaction.calculateFine(5, Book.BookType.FICTION), 0.0001);
+        assertEquals(3.25, Transaction.calculateFine(10, Book.BookType.NONFICTION), 0.0001);
     }
 
     @Test
     @DisplayName("WB Test 8: calculateFine - 2x rate cehck")
     public void testCalculateFine_DoubleRateAndCap()
     {
-        assertEquals(22.50, checkout.calculateFine(20, Book.BookType.TEXTBOOK), 0.0001);
-        assertEquals(25.0, checkout.calculateFine(200, Book.BookType.FICTION), 0.0001);
+        assertEquals(22.50, Transaction.calculateFine(20, Book.BookType.TEXTBOOK), 0.0001);
+        assertEquals(25.0, Transaction.calculateFine(200, Book.BookType.FICTION), 0.0001);
     }
 
 }
