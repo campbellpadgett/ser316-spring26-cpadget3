@@ -40,7 +40,7 @@ public class Transaction {
         final double WEEK_FINE = 0.25;
         final int TWO_WEEKS = 14;
         final double TWO_WEEKS_FINE = 0.50;
-        final double TWO_WEEKS_PLUS_FINE = 0.50;
+        final double TWO_WEEKS_PLUS_FINE = 1.00;
         final double MAX_FINE_AMOUNT = 25.0;
 
         if (numOfDays <= 0) {
